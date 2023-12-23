@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 09 Agu 2023 pada 16.24
+-- Waktu pembuatan: 23 Des 2023 pada 15.36
 -- Versi server: 10.4.28-MariaDB
 -- Versi PHP: 8.2.4
 
@@ -43,7 +43,7 @@ CREATE TABLE `akun` (
 --
 
 INSERT INTO `akun` (`id_akun`, `nomor_transaksi`, `kode_akun`, `nama_akun`, `tipe_akun`, `kredit`, `debit`, `status`) VALUES
-(5, 1, '111-1', 'BANK BCA', '2', 0, 850000, 'Y'),
+(5, 1, '111-1', 'BANK BCA', '2', 0, 400000, 'Y'),
 (6, 2, '111-2', 'BANK BRI', '2', 0, 0, 'Y'),
 (7, 3, '111-3', 'BANK DANAMON', '2', 0, 0, 'Y');
 
@@ -92,6 +92,14 @@ CREATE TABLE `cash_keluar` (
   `keterangan` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data untuk tabel `cash_keluar`
+--
+
+INSERT INTO `cash_keluar` (`id_ckeluar`, `nomor_keluar`, `bukti_keluar`, `terima_dari`, `dari`, `jumlah`, `status_hapus`, `id_akun`, `tanggal_keluar`, `keterangan`) VALUES
+(1, 1, 'CK/2309/0001', 'customer', '1', 200000, 'Y', 5, '2006-09-23', 'adwdawd'),
+(2, 2, 'CK/2309/0002', 'pihak_jasa', '1', 400000, 'Y', 5, '2006-09-23', 'adwdawd');
+
 -- --------------------------------------------------------
 
 --
@@ -111,6 +119,13 @@ CREATE TABLE `cash_masuk` (
   `status_hapus` varchar(1) NOT NULL DEFAULT 'Y',
   `creator` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data untuk tabel `cash_masuk`
+--
+
+INSERT INTO `cash_masuk` (`id_cmasuk`, `bukti_masuk`, `nomor_masuk`, `terima_dari`, `sumber`, `id_akun`, `tanggal_masuk`, `jumlah`, `keterangan`, `status_hapus`, `creator`) VALUES
+(6, 'CM/2309/0001', 1, 'customer', '1', 5, '2006-09-23', 200000, 'adwdawd', 'Y', '');
 
 -- --------------------------------------------------------
 
@@ -184,7 +199,10 @@ CREATE TABLE `history_akun` (
 INSERT INTO `history_akun` (`id_ha`, `id_akun`, `id_pembelian`, `id_penjualan`, `id_cmasuk`, `id_ckeluar`, `kredit`, `debit`, `tanggal`) VALUES
 (3, 5, NULL, 3, 0, 0, 0, 850000, '2023-07-15'),
 (5, 5, NULL, NULL, 4, 0, 0, 200000, '2023-08-09'),
-(6, 5, NULL, NULL, 5, 0, 0, 200000, '2023-08-09');
+(6, 5, NULL, NULL, 5, 0, 0, 200000, '2023-08-09'),
+(7, 5, NULL, NULL, 6, 0, 0, 200000, '2023-09-06'),
+(8, 5, NULL, NULL, 0, 1, 200000, 0, '2023-09-06'),
+(9, 5, NULL, NULL, 0, 2, 200000, 0, '2023-09-06');
 
 -- --------------------------------------------------------
 
@@ -212,7 +230,10 @@ INSERT INTO `history_cash_keluar` (`id_hck`, `id_cash_keluar`, `id_barang`, `kua
 (4, 2, 0, 0, 2, 200000),
 (5, 3, 0, 0, 1, 200000),
 (6, 3, 0, 0, 2, 200000),
-(7, 4, 0, 0, 1, 100000);
+(7, 4, 0, 0, 1, 100000),
+(8, 1, 1, 20, 1, 200000),
+(9, 2, 0, 0, 1, 200000),
+(10, 2, 0, 0, 1, 200000);
 
 -- --------------------------------------------------------
 
@@ -236,7 +257,8 @@ CREATE TABLE `history_cash_masuk` (
 --
 
 INSERT INTO `history_cash_masuk` (`id_hcm`, `id_cash_masuk`, `id_barang`, `jasa`, `kuantitas`, `jumlah`, `keterangan`, `user`) VALUES
-(6, 5, 1, 0, 20, 200000, '', '');
+(6, 5, 1, 0, 20, 200000, '', ''),
+(7, 6, 1, 2, 20, 200000, '', '');
 
 -- --------------------------------------------------------
 
@@ -742,13 +764,13 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT untuk tabel `cash_keluar`
 --
 ALTER TABLE `cash_keluar`
-  MODIFY `id_ckeluar` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ckeluar` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT untuk tabel `cash_masuk`
 --
 ALTER TABLE `cash_masuk`
-  MODIFY `id_cmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_cmasuk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `customer`
@@ -766,19 +788,19 @@ ALTER TABLE `data_mobil`
 -- AUTO_INCREMENT untuk tabel `history_akun`
 --
 ALTER TABLE `history_akun`
-  MODIFY `id_ha` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_ha` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_cash_keluar`
 --
 ALTER TABLE `history_cash_keluar`
-  MODIFY `id_hck` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_hck` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_cash_masuk`
 --
 ALTER TABLE `history_cash_masuk`
-  MODIFY `id_hcm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_hcm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT untuk tabel `history_jasa`
